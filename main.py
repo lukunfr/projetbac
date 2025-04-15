@@ -1,7 +1,8 @@
 def main():
-
-    return  main()
+    print("HelloWorld")
 
 def bird():
+    print(5+1)
 
-    return bird()
+main()
+bird()
