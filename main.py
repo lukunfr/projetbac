@@ -2,7 +2,7 @@ def main():
     print("HelloWorld")
 
 def bird():
-    print(5+1)
+    print(5+6)
 
 main()
 bird()
