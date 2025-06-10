@@ -1,0 +1,24 @@
+# class Skills:
+#     """
+#     Classe représentant une compétence avec un nom, un effet, une taille, des dégâts et un temps d'invocation.
+#     """
+#
+#     def __init__(self, name, effect, size, damage, time):
+#         self.name = name
+#         self.effect = effect
+#         self.name = size
+#         self.damage = damage
+#         self.time = time
+#         print(f"Vous avez choisi la compétence : {Skills}")
+#
+#     # Le sort devra mettre un "temps" pour l'invoquer (le nom) et devra avoir une taille, un effet et des dégâts.
+#
+#     def give_damage(self):
+#         pass
+#
+#
+# flying_book = Skills("Livre Volant", "vol_rapide", 25, 20, 1.0)
+# magic_ink = Skills("Encre Magique", "invincibilité", 15, 0, 0.5)
+# eraser_wave = Skills("Vague de Gomme", "efface_obstacles", 40, 30, 2.0)
+# pencil_spear = Skills("Lance de Crayon", "attaque_perçante", 35, 50, 1.5)
+# ruler_shield = Skills("Bouclier de Règle", "protection", 50, 0, 3.0)
