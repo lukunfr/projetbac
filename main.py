@@ -8,7 +8,7 @@ screen_width, screen_height = screen.get_size()
 background = pygame.image.load("background.jpg")
 background = pygame.transform.scale(background, (screen_width, screen_height))
 bird = pygame.image.load("bird.jpg")
-bird = pygame.transform.scale(bird, (50, 50))
+bird = pygame.transform.scale(bird, (60, 60))
 
 running = True
 
