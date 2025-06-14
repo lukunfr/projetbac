@@ -7,8 +7,12 @@ screen = pygame.display.set_mode((1200, 600))
 screen_width, screen_height = screen.get_size()
 background = pygame.image.load("background.jpg")
 background = pygame.transform.scale(background, (screen_width, screen_height))
-bird = pygame.image.load("bird.jpg")
-bird = pygame.transform.scale(bird, (60, 60))
+book = pygame.image.load("book.png")
+book = pygame.transform.scale(book, (60, 60))
+crayon = pygame.image.load("crayon.png")
+crayon = pygame.transform.scale(crayon, (200, 410))
+gomme = pygame.image.load("gomme.png")
+
 
 running = True
 
@@ -33,10 +37,13 @@ while running:
         y = 550
         velocity = 0
 
+
+
     # BACKGROUND
     screen.fill((0, 0, 0))  # Rafraichissement de l'écra
     screen.blit(background, (0,0)) #Affiche le fond d'écran
-    screen.blit(bird, (x,y))    # en deuxieme l'oisea
+    screen.blit(book, (x,y))    # en deuxieme l'oisea
+    screen.blit(crayon, (300, 270))
     pygame.display.flip()  # L'affichage pour mettre les "objects" à l'écran
 
 pygame.quit()
