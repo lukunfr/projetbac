@@ -17,25 +17,27 @@ gomme = pygame.image.load("gomme.png")
 running = True
 
 x, y = 100, 300 # position définit pour tout object si ce n'est pas précisé.
-velocity = 1 # Rapidité
-gravity = 0.005   #Gravité de l'objet
-jump = -1
+y_velocity = 1 # Rapidité
+gravity = 0.05   #Gravité de l'objet
+jump_force = -100 # Hauteur de saut ?
+book_start = False
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN: # Action de la souris en cliquant gauche
-            velocity = jump #Mise en place du "saut".
+            book_start = True
+            y_velocity = jump_force #Mise en place du "saut".
 
-
-    # Définir le placement/déplacements/saut
-    velocity += gravity
-    velocity = max(min(velocity, 5), -2)
-    y += velocity
-    if y > 550:
-        y = 550
-        velocity = 0
+    if book_start:
+        # Définir le placement/déplacements/saut
+        y_velocity += gravity
+        y_velocity = max(min(y_velocity, 5), -2.5) # Hauteur de saut
+        y += y_velocity
+        if y > 550:
+            y = 550
+            velocity = 0
 
 
 
@@ -49,5 +51,5 @@ while running:
 pygame.quit()
 
 # à faire :
-# Graviter
-# Images
+# défilement des structures
+
