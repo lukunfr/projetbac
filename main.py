@@ -1,55 +1,104 @@
+python
 import pygame
+import random
 
+# Initialisation de Pygame et de la fenêtre
 pygame.init()
-
-    # Set-up de tout le graphique
 screen = pygame.display.set_mode((1200, 600))
-screen_width, screen_height = screen.get_size()
-background = pygame.image.load("background.jpg")
-background = pygame.transform.scale(background, (screen_width, screen_height))
-book = pygame.image.load("book.png")
-book = pygame.transform.scale(book, (60, 60))
-crayon = pygame.image.load("crayon.png")
-crayon = pygame.transform.scale(crayon, (200, 410))
-gomme = pygame.image.load("gomme.png")
+clock = pygame.time.Clock()
+font = pygame.font.SysFont(None, 60)
 
+# Chargement des images
+background = pygame.transform.scale(pygame.image.load('background.jpg'), (1200, 600))
+book_img = pygame.transform.scale(pygame.image.load('book.png'), (60, 60))
 
-running = True
+# Variables du livre (joueur)
+book_x = 100
+book_y = 300
+y_velocity = 0
+gravity = 0.5
+jump_force = -10
 
-x, y = 100, 300 # position définit pour tout object si ce n'est pas précisé.
-y_velocity = 1 # Rapidité
-gravity = 0.05   #Gravité de l'objet
-jump_force = -100 # Hauteur de saut ?
-book_start = False
+# Variables de l'obstacle (tuyau)
+obstacle_x = 1200
+obstacle_width = 60
+gap_height = 210
+gap_y = random.randint(80, 340)
+obstacle_speed = 4
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN: # Action de la souris en cliquant gauche
-            book_start = True
-            y_velocity = jump_force #Mise en place du "saut".
+background_x = 0
+started = False
 
-    if book_start:
-        # Définir le placement/déplacements/saut
-        y_velocity += gravity
-        y_velocity = max(min(y_velocity, 5), -2.5) # Hauteur de saut
-        y += y_velocity
-        if y > 550:
-            y = 550
-            velocity = 0
+while True:
+    # Réinitialisation à chaque partie
+    book_y = 300
+    y_velocity = 0
+    obstacle_x = 1200
+    gap_y = random.randint(80, 340)
+    started = False
+    background_x = 0
+    running = True
 
+    while running:
+        dt = clock.tick(60)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                started = True
+                y_velocity = jump_force
 
+        # Défilement du fond
+        background_x -= 2
+        if background_x <= -1200:
+            background_x = 0
+        screen.blit(background, (background_x, 0))
+        screen.blit(background, (background_x + 1200, 0))
 
-    # BACKGROUND
-    screen.fill((0, 0, 0))  # Rafraichissement de l'écra
-    screen.blit(background, (0,0)) #Affiche le fond d'écran
-    screen.blit(book, (x,y))    # en deuxieme l'oisea
-    screen.blit(crayon, (300, 270))
-    pygame.display.flip()  # L'affichage pour mettre les "objects" à l'écran
+        if started:
+            # Gravité et déplacement du livre
+            y_velocity += gravity
+            book_y += y_velocity
+            if book_y >= 540:
+                book_y = 540
+                y_velocity = 0
+            if book_y <= 0:
+                book_y = 0
+                y_velocity = 1
 
-pygame.quit()
+            # Déplacement de l'obstacle
+            obstacle_x -= obstacle_speed
+            if obstacle_x + obstacle_width < 0:
+                obstacle_x = 1200
+                gap_y = random.randint(80, 340)
 
-# à faire :
-# défilement des structures
+            # Dessin de l'obstacle (haut et bas)
+            pygame.draw.rect(screen, (200, 50, 50), (obstacle_x, 0, obstacle_width, gap_y))
+            bottom_y = gap_y + gap_height
+            pygame.draw.rect(screen, (200, 50, 50), (obstacle_x, bottom_y, obstacle_width, 600 - bottom_y))
 
+            # Collision
+            book_rect = pygame.Rect(book_x, book_y, 60, 60)
+            top_rect = pygame.Rect(obstacle_x, 0, obstacle_width, gap_y)
+            bottom_rect = pygame.Rect(obstacle_x, bottom_y, obstacle_width, 600 - bottom_y)
+            if book_rect.colliderect(top_rect) or book_rect.colliderect(bottom_rect):
+                running = False
+
+        # Affichage du livre
+        screen.blit(book_img, (book_x, book_y))
+        pygame.display.flip()
+
+    # Message de fin et attente d'un clic pour recommencer
+    text = font.render("HAHA fallais mieux réviser", True, (255, 255, 255))
+    rect = text.get_rect(center=(600, 300))
+    screen.blit(text, rect)
+    pygame.display.flip()
+    wait = True
+    while wait:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                wait = False
